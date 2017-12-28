@@ -1,4 +1,4 @@
-package com.chk.oocrow;
+package com.chk.oocrow.View;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,9 +12,10 @@ import android.view.View;
 
 /**
  * Created by chk on 17-12-26.
+ * 绘制小鸡自定义View
  */
 
-public class MyChickView extends View{
+public class ChickView extends View{
 
     public static int DEVICE_WIDTH;
     public static int DEVICE_HEIGHT;
@@ -22,7 +23,7 @@ public class MyChickView extends View{
     int viewHeight;
     Paint mPaint;
     Paint mEyePaint;
-    Paint mMousePaint;
+    Paint mMouthPaint;
 
     Path mLeftPath;
     float mLeftXAnchor;
@@ -39,12 +40,12 @@ public class MyChickView extends View{
 
     int mPower;
 
-    public MyChickView(Context context) {
+    public ChickView(Context context) {
         super(context);
         init();
     }
 
-    public MyChickView(Context context, @Nullable AttributeSet attrs) {
+    public ChickView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -67,11 +68,11 @@ public class MyChickView extends View{
         mEyePaint.setAntiAlias(true);
 
 
-        mMousePaint = new Paint();
-        mMousePaint.setColor(Color.BLACK);
-        mMousePaint.setStyle(Paint.Style.STROKE);
-        mMousePaint.setStrokeWidth(10);
-        mMousePaint.setAntiAlias(true);
+        mMouthPaint = new Paint();
+        mMouthPaint.setColor(Color.BLACK);
+        mMouthPaint.setStyle(Paint.Style.STROKE);
+        mMouthPaint.setStrokeWidth(10);
+        mMouthPaint.setAntiAlias(true);
 
     }
 
@@ -79,33 +80,33 @@ public class MyChickView extends View{
 //        mLeftPath = new Path();
         mLeftXAnchor = 0;
         mLeftYAnchor = viewHeight/2+200;
-//        mLeftPath.moveTo(viewWidth/2-300,viewHeight/2-300);
-//        mLeftPath.quadTo(mLeftXAnchor,mLeftYAnchor,100,viewHeight/2+300);
+//        mLeftPath.moveTo(mViewWidth/2-300,mViewHeight/2-300);
+//        mLeftPath.quadTo(mLeftXAnchor,mLeftYAnchor,100,mViewHeight/2+300);
 
 //        mRightPath = new Path();
         mRightXAnchor = viewWidth;
         mRightYAnchor = viewHeight/2+200;
-//        mRightPath.moveTo(viewWidth/2+300,viewHeight/2-300);
-//        mRightPath.quadTo(mRightXAnchor,mRightYAnchor,viewWidth-100,viewHeight/2+300);
+//        mRightPath.moveTo(mViewWidth/2+300,mViewHeight/2-300);
+//        mRightPath.quadTo(mRightXAnchor,mRightYAnchor,mViewWidth-100,mViewHeight/2+300);
 
 //        mTopPath = new Path();
         mTopXAnchor = viewWidth/2;
         mTopYAnchor = viewHeight/2-400;
-//        mTopPath.moveTo(viewWidth/2-300,viewHeight/2-300);
-//        mTopPath.quadTo(mTopXAnchor,mTopYAnchor,viewWidth/2+300,viewHeight/2-300);
+//        mTopPath.moveTo(mViewWidth/2-300,mViewHeight/2-300);
+//        mTopPath.quadTo(mTopXAnchor,mTopYAnchor,mViewWidth/2+300,mViewHeight/2-300);
 
 //        mBottomPath = new Path();
         mBottomXAnchor = viewWidth/2;
         mBottomYAnchor = viewHeight/2+400;
-//        mBottomPath.moveTo(100,viewHeight/2+300);
-//        mBottomPath.quadTo(mBottomXAnchor,mBottomYAnchor,viewWidth-100,viewHeight/2+300);
+//        mBottomPath.moveTo(100,mViewHeight/2+300);
+//        mBottomPath.quadTo(mBottomXAnchor,mBottomYAnchor,mViewWidth-100,mViewHeight/2+300);
     }
 
     void drawPath(Canvas canvas) {
-//        mLeftPath.quadTo(mLeftXAnchor,mLeftYAnchor,100,viewHeight/2+300);
-//        mRightPath.quadTo(mRightXAnchor,mRightYAnchor,viewWidth-100,viewHeight/2+300);
-//        mTopPath.quadTo(mTopXAnchor,mTopYAnchor,viewWidth/2+300,viewHeight/2-300);
-//        mBottomPath.quadTo(mBottomXAnchor,mBottomYAnchor,viewWidth-100,viewHeight/2+300);
+//        mLeftPath.quadTo(mLeftXAnchor,mLeftYAnchor,100,mViewHeight/2+300);
+//        mRightPath.quadTo(mRightXAnchor,mRightYAnchor,mViewWidth-100,mViewHeight/2+300);
+//        mTopPath.quadTo(mTopXAnchor,mTopYAnchor,mViewWidth/2+300,mViewHeight/2-300);
+//        mBottomPath.quadTo(mBottomXAnchor,mBottomYAnchor,mViewWidth-100,mViewHeight/2+300);
 
         mLeftPath = new Path();
         mLeftPath.moveTo(viewWidth/2-300,viewHeight/2-300);
@@ -131,16 +132,49 @@ public class MyChickView extends View{
     }
 
     void drawEye(Canvas canvas) {
-        canvas.drawCircle(viewWidth/2-200,viewHeight/2-200,10, mEyePaint);
-        canvas.drawCircle(viewWidth/2+200,viewHeight/2-200,10, mEyePaint);
+//        if (mPower != 0) {
+//            canvas.save();
+//            canvas.scale(1+mPower/50f,1+mPower/50f,mViewWidth/2-200,mViewHeight/2-200);
+//            canvas.drawCircle(mViewWidth/2-200,mViewHeight/2-200,10, mEyePaint);
+//            canvas.restore();
+//            canvas.save();
+//            canvas.scale(1+mPower/50f,1+mPower/50f,mViewWidth/2+200,mViewHeight/2-200);
+//            canvas.drawCircle(mViewWidth/2+200,mViewHeight/2-200,10, mEyePaint);
+//            canvas.restore();
+//        } else {
+//            canvas.scale(1,1,mViewWidth/2,mViewHeight/2);
+//            canvas.drawCircle(mViewWidth/2-200,mViewHeight/2-200,10, mEyePaint);
+//            canvas.drawCircle(mViewWidth/2+200,mViewHeight/2-200,10, mEyePaint);
+//        }
+        if (mPower == 0) {
+            canvas.drawLine(viewWidth/2-200,viewHeight/2-200,viewWidth/2-100,viewHeight/2-200, mEyePaint);
+            canvas.drawLine(viewWidth/2+200,viewHeight/2-200,viewWidth/2+100,viewHeight/2-200, mEyePaint);
+        } else {
+            canvas.save();
+            canvas.rotate(3*mPower/5f,viewWidth/2-200,viewHeight/2-200);
+            canvas.drawLine(viewWidth/2-200,viewHeight/2-200,viewWidth/2-100,viewHeight/2-200, mEyePaint);
+            canvas.restore();
+
+            canvas.save();
+            canvas.rotate(-3*mPower/5f,viewWidth/2+200,viewHeight/2-200);
+            canvas.drawLine(viewWidth/2+200,viewHeight/2-200,viewWidth/2+100,viewHeight/2-200, mEyePaint);
+            canvas.restore();
+        }
     }
 
-    void drawMouse(Canvas canvas) {
-        canvas.drawLine(viewWidth/2,viewHeight/2-30,viewWidth/2+50,viewHeight/2,mMousePaint);
-        canvas.drawLine(viewWidth/2+50,viewHeight/2,viewWidth/2,viewHeight/2+30,mMousePaint);
-        canvas.drawLine(viewWidth/2,viewHeight/2+30,viewWidth/2-50,viewHeight/2,mMousePaint);
-        canvas.drawLine(viewWidth/2-50,viewHeight/2,viewWidth/2,viewHeight/2-30,mMousePaint);
-        canvas.drawLine(viewWidth/2+50,viewHeight/2,viewWidth/2-50,viewHeight/2,mMousePaint);
+    void drawMouth(Canvas canvas) {
+        canvas.save();
+        canvas.scale(1-mPower/150f,1+mPower/100f,viewWidth/2,viewHeight/2);
+        canvas.drawLine(viewWidth/2,viewHeight/2-30,viewWidth/2+50,viewHeight/2, mMouthPaint);
+        canvas.drawLine(viewWidth/2+50,viewHeight/2,viewWidth/2,viewHeight/2+30, mMouthPaint);
+        canvas.drawLine(viewWidth/2,viewHeight/2+30,viewWidth/2-50,viewHeight/2, mMouthPaint);
+        canvas.drawLine(viewWidth/2-50,viewHeight/2,viewWidth/2,viewHeight/2-30, mMouthPaint);
+        canvas.drawLine(viewWidth/2+50,viewHeight/2,viewWidth/2-50,viewHeight/2, mMouthPaint);
+        canvas.restore();
+    }
+
+    void drawHair(Canvas canvas) {
+
     }
 
     @Override
@@ -148,7 +182,7 @@ public class MyChickView extends View{
         super.onDraw(canvas);
         drawPath(canvas);
         drawEye(canvas);
-        drawMouse(canvas);
+        drawMouth(canvas);
     }
 
     public void setPower (int power) {

@@ -1,36 +1,41 @@
-package com.chk.oocrow;
+package com.chk.oocrow.View;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
- * Created by chk on 17-12-21.
+ * Created by chk on 17-12-27.
+ * 力量条自定义View
  */
 
-public class MyPowerView extends View{
+public class PowerView extends View{
 
     public static int DEVICE_WIDTH;
     public static int DEVICE_HEIGHT;
-    int viewWidth;
-    int viewHeight;
+    int mViewWidth;
+    int mViewHeight;
 
     Paint mPaint;
-    LinearGradient mLinearGradient;
-    float currentHeight;
+    Paint mTextPaint;
+    Paint mColorPaint;
+    int mRectWidth;
+    int mRectHeight;
+    int mDetalHeight;
 
-    public MyPowerView(Context context) {
+    int mPower = 0;
+
+
+    public PowerView(Context context) {
         super(context);
     }
 
-    public MyPowerView(Context context, @Nullable AttributeSet attrs) {
+    public PowerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -40,16 +45,58 @@ public class MyPowerView extends View{
         DEVICE_HEIGHT = dm.heightPixels;
 
         mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setColor(Color.BLACK);
         mPaint.setStrokeWidth(5);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setTextAlign(Paint.Align.CENTER);
 
+        mTextPaint = new Paint();
+        mTextPaint.setStrokeWidth(2);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
+
+        mColorPaint = new Paint();
+        mColorPaint.setColor(Color.GREEN);
+        mColorPaint.setStrokeWidth(4);
+    }
+
+    void drawRects(Canvas canvas) {
+        int startHeight = 4*mRectHeight;
+        int startWidth = mViewWidth/10;
+        int endWidth = mViewWidth*9/10;
+        for (int i=0; i<20; i++) {
+            canvas.drawRect(startWidth,startHeight+i*mDetalHeight,endWidth,startHeight+i*mDetalHeight+mRectHeight,mPaint);
+        }
+    }
+
+    void drawColor(Canvas canvas) {
+        if (mPower<5)
+            return;
+        if (mPower == 100)
+            mColorPaint.setColor(Color.RED);
+        int startHeight = 43*mRectHeight;
+        int startWidth = mViewWidth/10;
+        int endWidth = mViewWidth*9/10;
+        for (int i=0; i<mPower/5; i++) {
+            canvas.drawRect(startWidth,startHeight-mDetalHeight*i-mRectHeight,endWidth,startHeight-mDetalHeight*i,mColorPaint);
+        }
+        mColorPaint.setColor(Color.GREEN);
+    }
+
+    void drawTexts(Canvas canvas) {
+        canvas.drawText(""+mPower,mViewWidth/2,mDetalHeight*23.5f,mTextPaint);
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(0,viewHeight-currentHeight,viewWidth,viewHeight, mPaint);
-
+        drawTexts(canvas);
+        drawRects(canvas);
+        drawColor(canvas);
     }
 
     @Override
@@ -68,10 +115,14 @@ public class MyPowerView extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewWidth = getWidth();
-        viewHeight = getHeight();
-        mLinearGradient = new LinearGradient(0,0,viewWidth,viewHeight,Color.RED,Color.GREEN, Shader.TileMode.CLAMP);
-        mPaint.setShader(mLinearGradient);
+        mViewWidth = getWidth();
+        mViewHeight = getHeight();
+
+        mRectHeight = mViewHeight/48;
+        mDetalHeight = mRectHeight * 2;
+        mRectWidth = mViewWidth*4/5;
+
+        mTextPaint.setTextSize(mRectHeight * 2);
     }
 
     /**
@@ -86,9 +137,9 @@ public class MyPowerView extends View{
         if (specMode == MeasureSpec.EXACTLY) {  //父亲制定大小，对应match_parent
             result = specSize;
         } else {
-            result = 50;
+            result = 100;
             if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(50,specSize);
+                result = Math.min(100,specSize);
             }
         }
         return result;
@@ -115,8 +166,10 @@ public class MyPowerView extends View{
         return result;
     }
 
-    public void setCurrentHeight(int progress) {
-        this.currentHeight = progress/100f * viewHeight;
+    public void setPower(int power) {
+        mPower = power;
         invalidate();
     }
+
+
 }
