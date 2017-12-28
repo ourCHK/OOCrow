@@ -12,15 +12,23 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.SeekBar;
 
+import com.chk.oocrow.View.ChickView;
+import com.chk.oocrow.View.PowerView;
+
 public class ChickActivity extends AppCompatActivity {
 
-    MyChickView mMyChickView;
-    SeekBar mSeekBar;
+
     Utils mUtils;
 
     private float defaultVolume;
     private AudioManager mAudioManager;
     private Handler mHandler;
+
+
+    private ChickView mMyChickView;
+    private PowerView mPowerView;
+    private SeekBar mSeekBar;
+    private int mPower;
 
 
     @Override
@@ -52,23 +60,33 @@ public class ChickActivity extends AppCompatActivity {
 
     void viewInit() {
         mMyChickView = findViewById(R.id.myChickView);
+        mPowerView = findViewById(R.id.powerView);
+        mPowerView.setAlpha(0.2f);
         mSeekBar = findViewById(R.id.seekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                mPower = progress;
                 mMyChickView.setPower(progress);
+                mPowerView.setPower(progress);
                 mUtils.setVolume(progress);
                 mUtils.playMusic(progress);
+                if (progress == 0)
+                    mPowerView.setAlpha(0.1f);
+                else
+                    mPowerView.setAlpha(1f);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                mPowerView.setAlpha(1);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                if (mPower == 0)
+                    mPowerView.setAlpha(0.1f);
             }
         });
     }
@@ -95,4 +113,5 @@ public class ChickActivity extends AppCompatActivity {
         };
         mHandler.sendEmptyMessageDelayed(0, 0);
     }
+
 }
