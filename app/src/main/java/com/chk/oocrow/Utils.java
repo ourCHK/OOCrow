@@ -48,18 +48,12 @@ public class Utils {
         mMediaPlayer.start();
     }
 
-    public boolean isPlaying() {
-        if (mMediaPlayer == null) {
-            return false;
-        }
-        if (mMediaPlayer.isPlaying())
-            return true;
-        return false;
-    }
 
     public void stopMusic() {
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
+        if (mMediaPlayer.isPlaying()){
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+        }
         unregisterVolumeChangeReceiver(mContext);
     }
 
