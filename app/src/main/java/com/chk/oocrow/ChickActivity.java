@@ -1,7 +1,15 @@
 package com.chk.oocrow;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.database.ContentObserver;
+import android.media.AudioManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.SeekBar;
 
 import com.chk.oocrow.View.ChickView;
@@ -9,10 +17,19 @@ import com.chk.oocrow.View.PowerView;
 
 public class ChickActivity extends AppCompatActivity {
 
+
+    Utils mUtils;
+
+    private float defaultVolume;
+    private AudioManager mAudioManager;
+    private Handler mHandler;
+
+
     private ChickView mMyChickView;
     private PowerView mPowerView;
     private SeekBar mSeekBar;
     private int mPower;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +38,24 @@ public class ChickActivity extends AppCompatActivity {
         init();
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                defaultVolume = mUtils.getVolume();
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                defaultVolume = mUtils.getVolume();
+                Log.d("asd", "defaultVolume: " + String.valueOf(defaultVolume));
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     void init() {
-        viewInit();
         dataInit();
+        viewInit();
     }
 
     void viewInit() {
@@ -38,7 +70,8 @@ public class ChickActivity extends AppCompatActivity {
                 mPower = progress;
                 mMyChickView.setPower(progress);
                 mPowerView.setPower(progress);
-
+                mUtils.setVolume(progress);
+                mUtils.playMusic(progress);
                 if (progress == 0)
                     mPowerView.setAlpha(0.1f);
                 else
@@ -58,8 +91,27 @@ public class ChickActivity extends AppCompatActivity {
         });
     }
 
-    void dataInit() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mUtils.isPlaying()) {
+            mUtils.stopMusic();
+        }
+    }
 
+    @SuppressLint("HandlerLeak")
+    void dataInit() {
+        mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        mUtils = new Utils(this, mAudioManager, mHandler);
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) {
+                    defaultVolume = mUtils.getVolume();
+                }
+            }
+        };
+        mHandler.sendEmptyMessageDelayed(0, 0);
     }
 
 }
