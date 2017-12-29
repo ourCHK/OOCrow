@@ -89,9 +89,7 @@ public class ChickActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUtils.isPlaying()) {
-            mUtils.stopMusic();
-        }
+        mUtils.stopMusic();
     }
 
     @SuppressLint("HandlerLeak")

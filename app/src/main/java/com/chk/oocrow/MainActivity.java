@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity{
     MyPowerView myPowerView;
     ImageView imageView;
     RelativeLayout relativeLayout;
-    MediaPlayer mediaPlayer;
 
     int progressSelect;
 
@@ -99,14 +98,10 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 isStopThread = true;
-                mediaPlayer.start();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = MediaPlayer.create(MainActivity.this,R.raw.crow);
                 startDownThread();
             }
         });
@@ -145,7 +140,6 @@ public class MainActivity extends AppCompatActivity{
     void dataInit() {
 
         progressSelect = 5;
-        mediaPlayer = MediaPlayer.create(this,R.raw.crow);
 
         handler = new Handler(){
             @Override
@@ -167,8 +161,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mediaPlayer.stop();
-        mediaPlayer.release();
     }
 
     void startDownThread() {
