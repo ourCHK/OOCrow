@@ -2,12 +2,11 @@ package com.chk.oocrow;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.ContentObserver;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.SeekBar;
@@ -17,19 +16,16 @@ import com.chk.oocrow.View.PowerView;
 
 public class ChickActivity extends AppCompatActivity {
 
-
-    Utils mUtils;
-
-    private float defaultVolume;
     private AudioManager mAudioManager;
+    private float defaultVolume;
     private Handler mHandler;
 
+    private Utils mUtils;
 
     private ChickView mMyChickView;
     private PowerView mPowerView;
     private SeekBar mSeekBar;
     private int mPower;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +33,6 @@ public class ChickActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chick);
         init();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

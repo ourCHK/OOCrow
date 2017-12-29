@@ -63,7 +63,6 @@ public class ChickView extends View{
         mPaint.setAntiAlias(true);
 
         mEyePaint = new Paint();
-        mEyePaint.setColor(Color.BLACK);
         mEyePaint.setStrokeWidth(10);
         mEyePaint.setAntiAlias(true);
 
@@ -147,19 +146,29 @@ public class ChickView extends View{
 //            canvas.drawCircle(mViewWidth/2+200,mViewHeight/2-200,10, mEyePaint);
 //        }
         if (mPower == 0) {
+            mEyePaint.setColor(Color.BLACK);
             canvas.drawLine(viewWidth/2-200,viewHeight/2-200,viewWidth/2-100,viewHeight/2-200, mEyePaint);
             canvas.drawLine(viewWidth/2+200,viewHeight/2-200,viewWidth/2+100,viewHeight/2-200, mEyePaint);
         } else {
             canvas.save();
-            canvas.rotate(3*mPower/5f,viewWidth/2-200,viewHeight/2-200);
+            canvas.rotate(2*mPower/5f,viewWidth/2-125,viewHeight/2-200);
             canvas.drawLine(viewWidth/2-200,viewHeight/2-200,viewWidth/2-100,viewHeight/2-200, mEyePaint);
             canvas.restore();
 
             canvas.save();
-            canvas.rotate(-3*mPower/5f,viewWidth/2+200,viewHeight/2-200);
+            canvas.rotate(-2*mPower/5f,viewWidth/2+125,viewHeight/2-200);
             canvas.drawLine(viewWidth/2+200,viewHeight/2-200,viewWidth/2+100,viewHeight/2-200, mEyePaint);
             canvas.restore();
         }
+
+        canvas.drawCircle(viewWidth/2-125,viewHeight/2-175,25,mEyePaint);
+        canvas.drawCircle(viewWidth/2+125,viewHeight/2-175,25,mEyePaint);
+
+        mEyePaint.setColor(Color.WHITE);
+        float detal = (float)(12.5*Math.sin(Math.PI/4));
+        canvas.drawCircle(viewWidth/2-125-detal,viewHeight/2-175-detal,12.5f,mEyePaint);
+        canvas.drawCircle(viewWidth/2+125-detal,viewHeight/2-175-detal,12.5f,mEyePaint);
+        mEyePaint.setColor(Color.BLACK);
     }
 
     void drawMouth(Canvas canvas) {

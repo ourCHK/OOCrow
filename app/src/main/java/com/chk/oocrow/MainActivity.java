@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.chk.oocrow.View.MyPowerView;
+
 public class MainActivity extends AppCompatActivity{
 
     final int UP = 1;
